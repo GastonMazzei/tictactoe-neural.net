@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+  nginx:
+    image: webapp-nginx
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
+    ports:
+      - "81:81"
+      - "444:443"
+    volumes:
+      - "./app.conf:/etc/nginx/conf.d/app.conf"
+#      - "./templates:/usr/share/nginx/html"
+      - "./app:/usr/share/nginx/html"
+

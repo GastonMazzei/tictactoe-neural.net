@@ -1,0 +1,10 @@
+#!/bin/sh
+
+
+if [ $# -eq 0 ]; then
+    python3 scripts/play.py model-onlywin
+    exit 1
+fi
+
+echo "About to use the following model: $1"
+python3 scripts/play.py $1

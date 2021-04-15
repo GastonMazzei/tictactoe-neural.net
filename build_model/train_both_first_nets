@@ -1,0 +1,6 @@
+#!/bin/sh
+
+for f in "processer" "processer_onlyloose" "processer_onlywin" "loader" "loader2"; do
+	python3 scripts/$f.py;
+done
+

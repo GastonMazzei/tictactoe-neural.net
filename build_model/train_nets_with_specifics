@@ -1,0 +1,6 @@
+#!/bin/sh
+
+echo "0: neurons, 1: epochs, 2: batch size"
+for f in "loader" "loader2"; do
+        python3 scripts/$f.py $1 $2 $3;
+done

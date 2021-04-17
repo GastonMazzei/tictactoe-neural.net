@@ -196,7 +196,7 @@ function toggle(elementId, buttonId) {
         <h2 id="winner"></h2>
         <button class="button is-dark is-rounded is-focused" onclick="reset_board()">reset board</button>
         <!--<button id="more-info-button" class="button is-dark is-rounded is-focused" onclick="javascript:toggle('toggleText','more-info-button');">more info</button>-->
-        <!--<button id="more-info-button" class="button is-dark is-rounded is-focused" onclick="javascript:toggle('toggleText2','more-info-button');">more info</button>--->
+        <!--<button id="more-info-button" class="button is-dark is-rounded is-focused" onclick="javascript:toggle('toggleText2','more-info-button');">more info</button>-->
 
 </div>
     </div>
@@ -235,8 +235,9 @@ function show_probas(p){
     var mssg1 = '\n---The probabilities of each answer being optimal, as outputted by the 9 output layers activated with SoftMax, are as follows---\n';
     for (i=0 ; i<3; i++){
       mssg1+= '|___' + String(Math.round(10000*p[i*3])/100) + '%___|___' + String(Math.round(10000*p[i*3+1])/100) + '%___|___' + String(Math.round(10000*p[i*3+2])/100) + '%___|';
+    };
     w('output',mssg1); 
-    } 
+     
 }
 
 
@@ -585,15 +586,12 @@ render_board();
         </p>
 
 
-        <!--<p class="subtitle">With even more content</p>-->
+         <!-- <p class="subtitle">With even more content</p>
         <div class="content">
         </div>
       </div>
     </article>
-  </div>
-
-
--->
+  </div>-->
 
 
 </div>

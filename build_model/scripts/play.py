@@ -11,7 +11,8 @@ zeros=np.zeros((1,9,9))
 def move(history, markov=False):
 	local = np.asarray([[x for x in y] for y in history])
 	if markov:
-		x=np.concatenate([zeros[:,:len(local)-2,:],np.asarray(local)[-2:].reshape(1,2,9), zeros[:,len(local):,:]],1).reshape(1,9,9)
+		print('\n      (markovian)     \n')
+		x=np.concatenate([zeros[:,:len(local)-1,:],np.asarray(local)[-1:].reshape(1,1,9), zeros[:,len(local):,:]],1)#.reshape(1,9,9)
 	else:
 		x=np.concatenate([np.asarray(local).reshape(1,len(local),9), zeros[:,len(local):,:]],1).reshape(1,9,9)
 	print(x)

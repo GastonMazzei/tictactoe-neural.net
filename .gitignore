@@ -1,0 +1,11 @@
+*.npy
+build_model/models/
+build_model/npdata/
+build_model/fine_tune_logs/
+build_model/logs
+build_model/adjustment_1
+build_model/adjustment_2
+build_model/adjustment_1B
+build_model/fine_tune_5_times
+build_model/fine_tune_3_times
+build_model/play_against_net

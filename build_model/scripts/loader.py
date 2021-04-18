@@ -22,16 +22,12 @@ def create_model(s,NEUR=8, name="LSTM_chess_model"):
 
 def create_model_three_classes(s,NEUR=8, name="LSTM_chess_model"):
 	inputs = tf.keras.Input(shape=s)
-	lstm = tf.keras.layers.LSTM(NEUR, )#return_sequences=False, return_state=False)
+	lstm = tf.keras.layers.LSTM(NEUR, return_state=True)#return_sequences=False, return_state=False)
 	x = lstm(inputs)
 	x = tf.keras.layers.Dense(NEUR, activation="relu")(x)
-	x = tf.keras.layers.Dropout(0.1)(x)
+	#x = tf.keras.layers.Dropout(0.1)(x)
 	x = tf.keras.layers.Dense(NEUR, activation="relu")(x)
-	x = tf.keras.layers.Dropout(0.1)(x)
-	x = tf.keras.layers.Dense(NEUR, activation="relu")(x)
-	x = tf.keras.layers.Dropout(0.1)(x)
-	x = tf.keras.layers.Dense(NEUR, activation="relu")(x)
-	x = tf.keras.layers.Dropout(0.1)(x)
+	#x = tf.keras.layers.Dropout(0.1)(x)
 	x = tf.keras.layers.Dense(3, activation="softmax")(x)
 	outputs = (x)
 	model = tf.keras.Model(inputs=inputs, outputs=outputs, name=name)
@@ -88,13 +84,14 @@ if __name__=='__main__':
 	THREE = True
 	NINE = True	
 	X=np.load('x.npy')
-	L = int(0.8*len(X))
+	Y = np.load('y.npy')
+	L = int(0.95*len(X))
 
 	print(f'recieved: {sys.argv}')
 	try:
 		model = create_model_nine_classes((X.shape[1],X.shape[2]), NEUR=int(sys.argv[1]), name='LSTM_tictactoe_model')
 	except:
-		model = create_model_nine_classes((X.shape[1],X.shape[2]), NEUR=9, name='LSTM_tictactoe_model')
+		model = create_model_nine_classes((X.shape[1],X.shape[2]), NEUR=64, name='LSTM_tictactoe_model')
 
 	LOSS='categorical_crossentropy'
 	print('\n\n\n\ncase with nine outputs...\n\n\n\n')
@@ -107,12 +104,13 @@ if __name__=='__main__':
 	
 
 	print(CW)
-	model.compile(loss=LOSS, optimizer='adam', metrics='accuracy')
+	opt = tf.keras.optimizers.Adam(learning_rate=0.03)
+	model.compile(loss=LOSS, optimizer=opt, metrics='accuracy')
 	try:
-		result = model.fit(X[:L],Y[:L], epochs=50, batch_size=4096,
+		result = model.fit(X[:L],Y[:L], epochs=int(sys.argv[2]), batch_size=int(sys.argv[3]),
                             validation_data=(X[L:],Y[L:]))#,  class_weight=CW)
 	except:
-		result = model.fit(X[:L],Y[:L], epochs=int(sys.argv[2]), batch_size=int(sys.argv[3]),
+		result = model.fit(X[:L],Y[:L], epochs=30, batch_size=20000,
                             validation_data=(X[L:],Y[L:]))#,  class_weight=CW)
 
 	if not THREE:
@@ -120,6 +118,6 @@ if __name__=='__main__':
 		result.history['val_ROC'] = roc_curve(Y[L:], model.predict(X[L:]).flatten())
 	with open('resultsNN.pkl','wb') as f:
 		pickle.dump(result.history,f)
-	model.save('model-onlywin.h5', save_format="h5")
+	model.save('model-result.h5', save_format="h5")
 
 

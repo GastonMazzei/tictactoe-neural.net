@@ -64,6 +64,7 @@ def check_winner(v):
 
 if __name__=='__main__':
 
+	PROBA=0
 	try:
 		print(sys.argv)
 		VERBOSE, SINGLE, RANDOM = [bool(int(x)) for x in sys.argv[1:4]]
@@ -100,14 +101,17 @@ if __name__=='__main__':
 				board[ix] = 1
 			else:
 				probas = move(history, markov=False, O=True)
-				if  RANDOM: # RANDOM
+				if  RANDOM: # RANDOM could be set to false... 1rst player should be SMART! :-D (ad-hoc strategy)
 					probas = [x if board[i]==0 else 0 for i,x in enumerate(probas[0])]
 					freexs = [i for i,x in enumerate(probas) if x>0]
 					s=sum(probas)
 					IX = freexs[np.argmax(multinomial.rvs(1,p=[x/s for x in probas if x>0]))]
 					try:
 						pred = multinomial.rvs(1,p=[x/s for x in probas if x>0])
-						IX = freexs[np.argmax(pred)]
+						if np.random.rand()>PROBA:
+							IX = freexs[np.argmax(pred)]
+						else:
+							IX = np.random.choice(freexs)
 					except:
 						IX = np.random.choice([i for i,x in enumerate(board) if x==0])
 						board[ix] = 1
@@ -141,7 +145,12 @@ if __name__=='__main__':
 				probas = [x if board[i]==0 else 0 for i,x in enumerate(probas[0])]
 				freexs = [i for i,x in enumerate(probas) if x>0]
 				s=sum(probas)
-				IX = freexs[np.argmax(multinomial.rvs(1,p=[x/s for x in probas if x>0]))]
+				pred = multinomial.rvs(1,p=[x/s for x in probas if x>0])
+				if np.random.rand()>PROBA:
+					IX = freexs[np.argmax(pred)]
+				else:
+					IX = np.random.choice(freexs)
+
 			else: #DETERMINISTIC
 				probas = {v:k for k,v in enumerate(probas[0]) if board[k]==0} 
 				IX = probas[max(list(probas.keys()))]

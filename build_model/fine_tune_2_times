@@ -1,0 +1,10 @@
+#!/bin/sh
+
+for i in 1 2
+do
+	python3 scripts/game_generator.py 0 0 1 1000 1
+	python3 scripts/processer_for_fine.py
+	python3 scripts/loader_for_fine.py
+	python3 scripts/loader2_for_fine.py
+done
+

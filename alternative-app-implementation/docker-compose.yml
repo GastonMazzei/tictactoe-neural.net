@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+  flask:
+    image: webapp-flask
+    build:
+      context: .
+      dockerfile: Dockerfile-flask
+    ports:
+      - "3030:3030"
+    volumes:
+      - "./:/server"
+    environment:
+      - FLASK_DEBUG=1
+      - FLASK_ENV=development
+  nginx:
+    image: webapp-nginx
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
+    ports:
+      - "81:80"
+      - "444:443"
+    volumes:
+      - "./app.conf:/etc/nginx/conf.d/app.conf"
+    depends_on:
+      - flask
+
